@@ -7,9 +7,18 @@ import (
 	"strings"
 
 	"github.com/eacardenase/go_notes/note"
+	"github.com/eacardenase/go_notes/todo"
 )
 
 func main() {
+	todo, err := getTodo()
+
+	if err != nil {
+		fmt.Println("Todo could not be created.")
+
+		return
+	}
+
 	note, err := getNote()
 
 	if err != nil {
@@ -17,6 +26,17 @@ func main() {
 
 		return
 	}
+
+	todo.Display()
+	err = todo.Save()
+
+	if err != nil {
+		fmt.Println("Saving the file failed with error: ", err)
+
+		return
+	}
+
+	fmt.Println("Saving the todo succeeded!")
 
 	note.Display()
 	err = note.Save()
@@ -59,4 +79,15 @@ func getNote() (note.Note, error) {
 	}
 
 	return note, nil
+}
+
+func getTodo() (todo.Todo, error) {
+	content := getUserInput("Todo content: ")
+	todo, err := todo.New(content)
+
+	if err != nil {
+		return todo, err
+	}
+
+	return todo, nil
 }
