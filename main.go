@@ -112,5 +112,14 @@ func outputData(data outputable) error {
 }
 
 func printSomething(value interface{}) { // could also be used any, as it is an alias of interface
-	fmt.Print(value)
+	switch value.(type) {
+	case string:
+		fmt.Printf("The type of %v is of string.\n", value)
+	case int:
+		fmt.Printf("The type of %v is of int.\n", value)
+	case float64:
+		fmt.Printf("The type of %v is of float.\n", value)
+	default:
+		fmt.Println("Easy boy, I don't recognize that type!")
+	}
 }
