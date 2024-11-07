@@ -14,6 +14,11 @@ type saver interface {
 	Save() error
 }
 
+type outputable interface {
+	Display()
+	saver
+}
+
 func main() {
 	note, err := getNote()
 
@@ -31,19 +36,13 @@ func main() {
 		return
 	}
 
-	todo.Display()
-	err = saveData(todo)
+	err = outputData(todo)
 
 	if err != nil {
 		return
 	}
 
-	note.Display()
-	err = saveData(note)
-
-	if err != nil {
-		return
-	}
+	outputData(note)
 }
 
 func getUserInput(prompt string) string {
@@ -100,4 +99,10 @@ func saveData(data saver) error {
 	fmt.Println("Saving the todo succeeded!")
 
 	return nil
+}
+
+func outputData(data outputable) error {
+	data.Display()
+
+	return saveData(data)
 }
