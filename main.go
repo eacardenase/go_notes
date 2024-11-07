@@ -136,3 +136,7 @@ func printSomething(value any) { // could also be used any, as it is an alias of
 		fmt.Println(typedVal + 1) // can safely use typedVal value
 	}
 }
+
+func add[T int | float64 | string](a, b T) T {
+	return a + b
+}
