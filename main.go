@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/eacardenase/go_notes/note"
@@ -16,40 +15,27 @@ func main() {
 		return
 	}
 
-	fmt.Println(note)
+	note.Display()
 }
 
-func getUserInput(prompt string) (string, error) {
+func getUserInput(prompt string) string {
 	var value string
 
 	fmt.Print(prompt)
 	fmt.Scanln(&value)
 
-	if value == "" {
-		return "", errors.New("invalid input")
-	}
-
-	return value, nil
+	return value
 }
 
-func getNote() (*note.Note, error) {
-	title, err := getUserInput("Note title: ")
+func getNote() (note.Note, error) {
+	title := getUserInput("Note title: ")
+	content := getUserInput("Note content: ")
+
+	note, err := note.New(title, content)
 
 	if err != nil {
-		fmt.Println(err)
-
-		return &note.Note{}, err
+		return note, err
 	}
-
-	content, err := getUserInput("Note content: ")
-
-	if err != nil {
-		fmt.Println(err)
-
-		return &note.Note{}, err
-	}
-
-	note := note.New(title, content)
 
 	return note, nil
 }
