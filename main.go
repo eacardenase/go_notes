@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/eacardenase/go_notes/note"
 )
@@ -19,10 +22,19 @@ func main() {
 }
 
 func getUserInput(prompt string) string {
-	var value string
-
 	fmt.Print(prompt)
-	fmt.Scanln(&value)
+	reader := bufio.NewReader(os.Stdin)
+
+	value, err := reader.ReadString('\n')
+
+	if err != nil {
+		fmt.Println(err)
+
+		return ""
+	}
+
+	value = strings.TrimSuffix(value, "\n")
+	value = strings.TrimSuffix(value, "\r")
 
 	return value
 }
