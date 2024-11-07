@@ -111,15 +111,28 @@ func outputData(data outputable) error {
 	return saveData(data)
 }
 
-func printSomething(value interface{}) { // could also be used any, as it is an alias of interface
-	switch value.(type) {
-	case string:
-		fmt.Printf("The type of %v is of string.\n", value)
-	case int:
-		fmt.Printf("The type of %v is of int.\n", value)
-	case float64:
-		fmt.Printf("The type of %v is of float.\n", value)
-	default:
-		fmt.Println("Easy boy, I don't recognize that type!")
+func printSomething(value any) { // could also be used any, as it is an alias of interface
+	// switch value.(type) {
+	// case string:
+	// 	fmt.Printf("The type of %v is of string.\n", value)
+	// case int:
+	// 	fmt.Printf("The type of %v is of int.\n", value)
+	// case float64:
+	// 	fmt.Printf("The type of %v is of float.\n", value)
+	// default:
+	// 	fmt.Println("Easy boy, I don't recognize that type!")
+	// }
+
+	// value.(int) works like a guard type
+
+	typedVal, ok := value.(int) // ok would yield true if value is of type int
+
+	fmt.Println(typedVal + 1) // 0 would be the null value
+	// fmt.Println(value + 1) // error, invalid type
+
+	if ok {
+		fmt.Printf("%v is of type int\n", typedVal)
+
+		fmt.Println(typedVal + 1) // can safely use typedVal value
 	}
 }
