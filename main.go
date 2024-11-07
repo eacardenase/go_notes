@@ -20,6 +20,10 @@ type outputable interface {
 }
 
 func main() {
+	printSomething(1)
+	printSomething(1.5)
+	printSomething("Something")
+
 	note, err := getNote()
 
 	if err != nil {
@@ -105,4 +109,8 @@ func outputData(data outputable) error {
 	data.Display()
 
 	return saveData(data)
+}
+
+func printSomething(value interface{}) { // could also be used any, as it is an alias of interface
+	fmt.Print(value)
 }
