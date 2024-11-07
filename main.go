@@ -19,6 +19,15 @@ func main() {
 	}
 
 	note.Display()
+	err = note.Save()
+
+	if err != nil {
+		fmt.Println("Saving the file failed with error: ", err)
+
+		return
+	}
+
+	fmt.Println("Saving the note succeeded!")
 }
 
 func getUserInput(prompt string) string {

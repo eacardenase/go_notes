@@ -1,6 +1,7 @@
 package note
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -30,9 +31,15 @@ func (n Note) Display() {
 	fmt.Printf("Your note title '%v' has the following content:\n\n%v\n", n.title, n.content)
 }
 
-func (n Note) Save() {
-	fileName := strings.ReplaceAll(n.title, " ", "")
+func (n Note) Save() error {
+	fileName := strings.ReplaceAll(n.title, " ", "_")
 	fileName = strings.ToLower(fileName)
 
-	os.WriteFile(fileName, []byte(n.content), 0644)
+	json, err := json.Marshal(n)
+
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(fileName, []byte(json), 0644)
 }
