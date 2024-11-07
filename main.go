@@ -10,15 +10,11 @@ import (
 	"github.com/eacardenase/go_notes/todo"
 )
 
+type saver interface {
+	Save() error
+}
+
 func main() {
-	todo, err := getTodo()
-
-	if err != nil {
-		fmt.Println("Todo could not be created.")
-
-		return
-	}
-
 	note, err := getNote()
 
 	if err != nil {
@@ -27,27 +23,27 @@ func main() {
 		return
 	}
 
-	todo.Display()
-	err = todo.Save()
+	todo, err := getTodo()
 
 	if err != nil {
-		fmt.Println("Saving the file failed with error: ", err)
+		fmt.Println("Todo could not be created.")
 
 		return
 	}
 
-	fmt.Println("Saving the todo succeeded!")
+	todo.Display()
+	err = saveData(todo)
+
+	if err != nil {
+		return
+	}
 
 	note.Display()
-	err = note.Save()
+	err = saveData(note)
 
 	if err != nil {
-		fmt.Println("Saving the file failed with error: ", err)
-
 		return
 	}
-
-	fmt.Println("Saving the note succeeded!")
 }
 
 func getUserInput(prompt string) string {
@@ -90,4 +86,18 @@ func getTodo() (todo.Todo, error) {
 	}
 
 	return todo, nil
+}
+
+func saveData(data saver) error {
+	err := data.Save()
+
+	if err != nil {
+		fmt.Println("Saving the file failed with error: ", err)
+
+		return err
+	}
+
+	fmt.Println("Saving the todo succeeded!")
+
+	return nil
 }
